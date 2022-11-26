@@ -4,7 +4,6 @@ import Wrapper from '../assets/wrappers/LandingPage'
 const Landing = () => {
   return (
     <Wrapper>
-
       <nav>
         <img src={logo} alt="jobify" className="logo" />
       </nav>
