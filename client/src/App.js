@@ -1,11 +1,17 @@
+import { BrowserRouter, Routes, Route, Links } from 'react-router-dom';
 import { Landing } from "./pages";
 
 
 function App() {
   return (
-    <div className="">
-      <Landing />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<div>Dashboard</div>} />
+        <Route path="/register" element={<div>Register</div>} />
+        <Route path="/landing" element={<Landing />} />
+        <Route path="*" element={<div>Error</div>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
