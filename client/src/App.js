@@ -1,8 +1,11 @@
+import Landing from "./pages/Landing";
 
 
 function App() {
   return (
-    <h1>jobhunter</h1>
+    <div className="">
+      <Landing />
+    </div>
   );
 }
 
