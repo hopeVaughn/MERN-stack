@@ -13,7 +13,7 @@ const initialState = {
 
 const Register = () => {
   const [values, setValues] = useState(initialState);
-  const { isLoading, showAlert } = useAppContext();
+  const { isLoading, showAlert, displayAlert } = useAppContext();
   // global context and useNavigate later
 
   const toggleMember = () => {
@@ -21,12 +21,17 @@ const Register = () => {
   }
 
   const handleChange = (e) => {
-    console.log(e.target);
+    setValues({ ...values, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(e.target);
+    const { name, email, password, isMember } = values;
+    if (!email || !password || (!isMember && !name)) {
+      displayAlert()
+      return
+    }
+    console.log(values);
   }
   return (
     <Wrapper className='full-page'>
@@ -39,7 +44,7 @@ const Register = () => {
           <FormRow
             type='text'
             name='name'
-            value={values.email}
+            value={values.name}
             handleChange={handleChange} />
         }
         {/* email input */}
