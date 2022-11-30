@@ -3,7 +3,6 @@ const app = express();
 import dotenv from 'dotenv'
 dotenv.config()
 import 'express-async-errors'
-import cors from 'cors';
 
 // db and authenticateUser
 import connectDB from './db/connect.js';
@@ -17,9 +16,9 @@ import notFoundMiddleware from './middleware/not-found.js';
 import errorHandlerMiddleware from './middleware/error-handler.js';
 
 app.use(express.json());
-app.use(cors());
+
 app.get('/', (req, res) => {
-  res.send('Hello World')
+  res.send({ msg: 'Hello World' })
 })
 
 app.use('/api/v1/auth', authRouter);
@@ -42,6 +41,6 @@ const start = async () => {
   } catch (error) {
     console.error(error)
   }
-}
+};
 
-start()
+start();
