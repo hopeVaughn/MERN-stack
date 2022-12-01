@@ -20,9 +20,9 @@ if (process.env.NODE_ENV !== 'production') {
 }
 app.use(express.json());
 
-// app.get('/', (req, res) => {
-//   res.send({ msg: 'Hello World' })
-// })
+app.get('/', (req, res) => {
+  res.send({ msg: 'Hello World' })
+})
 
 // API PROXY ADDRESS
 app.get('/api/v1', (req, res) => {
