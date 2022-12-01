@@ -31,20 +31,21 @@ const login = async (req, res) => {
   if (!email || !password) {
     throw new BadRequestError('Please provide all values')
   }
-  const user = await User.findOne({ email })
+  const user = await User.findOne({ email }).select('+password')
   if (!user) {
     throw new UnAuthenticatedError('Invalid Credentials')
   }
-  console.log(user);
   const isPasswordCorrect = await user.comparePassword(password);
   if (!isPasswordCorrect) {
     throw new UnAuthenticatedError('Invalid Credentials')
   }
+  const token = user.createJWT()
+  user.password = undefined;
+  res.status(StatusCodes.OK).json({ user, token, location: user.location })
   res.send('login user')
 }
 const updateUser = async (req, res) => {
   res.send('update User')
-
 }
 
 export { register, login, updateUser }
