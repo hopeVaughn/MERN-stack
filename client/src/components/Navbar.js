@@ -1,7 +1,11 @@
 import Wrapper from '../assets/wrappers/Navbar'
 const Navbar = () => {
   return (
-    <Wrapper>Navbar</Wrapper>
+    <Wrapper>
+      <h4>
+        Navbar
+      </h4>
+    </Wrapper>
   )
 }
 export default Navbar
