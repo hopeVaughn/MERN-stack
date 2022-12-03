@@ -6,7 +6,8 @@ import {
   CLEAR_ALERT,
   SETUP_USER_BEGIN,
   SETUP_USER_SUCCESS,
-  SETUP_USER_ERROR
+  SETUP_USER_ERROR,
+  TOGGLE_SIDEBAR,
 }
   from './actions';
 
@@ -22,7 +23,8 @@ const initialState = {
   user: user ? JSON.parse(user) : null,
   token: token,
   userLocation: userLocation || '',
-  jobLocation: userLocation || ''
+  jobLocation: userLocation || '',
+  showSidebar: false,
 }
 
 const AppContext = React.createContext()
@@ -72,10 +74,15 @@ const AppProvider = ({ children }) => {
     }
     clearAlert();
   }
+
+  const toggleSidebar = () => {
+    dispatch({ type: TOGGLE_SIDEBAR })
+  }
   const values = {
     ...state,
     displayAlert,
-    setupUser
+    setupUser,
+    toggleSidebar
   }
   return (
     <AppContext.Provider
