@@ -5,9 +5,13 @@ import {
   SETUP_USER_SUCCESS,
   SETUP_USER_ERROR,
   TOGGLE_SIDEBAR,
+  LOGOUT_USER,
 } from "./actions"
 
+import { initialState } from './appContext';
+
 const reducer = (state, action) => {
+
   if (action.type === DISPLAY_ALERT) {
     return {
       ...state,
@@ -24,7 +28,7 @@ const reducer = (state, action) => {
       alertText: '',
     }
   }
-  //begining of setup user state changes
+  //beginning of setup user state changes
   if (action.type === SETUP_USER_BEGIN) {
     return { ...state, isLoading: true }
   }
@@ -58,7 +62,17 @@ const reducer = (state, action) => {
       showSidebar: !state.showSidebar,
     }
   }
-  //end of toggle sidebar 
+  //start of logoutUser 
+  if (action.type === LOGOUT_USER) {
+    return {
+      ...initialState,
+      user: null,
+      token: null,
+      userLocation: '',
+      jobLocation: '',
+    };
+  }
+  //end of logoutUser
   throw new Error(`no such action: ${action.type}`)
 }
 
