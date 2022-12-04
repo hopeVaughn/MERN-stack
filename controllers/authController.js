@@ -17,7 +17,7 @@ const register = async (req, res) => {
   res.status(StatusCodes.CREATED).json({
     user: {
       email: user.email,
-      lastname: user.lastName,
+      lastName: user.lastName,
       location: user.location,
       name: user.name
     },
