@@ -46,7 +46,7 @@ const Profile = () => {
             handleChange={(e) => setEmail(e.target.value)}
           />
           <FormRow
-            type="type"
+            type="text"
             name="location"
             value={location}
             handleChange={(e) => setLocation(e.target.value)}
