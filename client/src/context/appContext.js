@@ -40,23 +40,27 @@ const AppProvider = ({ children }) => {
     baseURL: '/api/v1',
   })
   //request
-  authFetch.interceptors.request.use((config) => {
-    config.headers['Authorization'] = `Bearer ${state.token}`
-    return config
-  }, (error) => {
-    return Promise.reject(error)
-  })
+  authFetch.interceptors.request.use(
+    (config) => {
+      config.headers['Authorization'] = `Bearer ${state.token}`
+      return config
+    },
+    (error) => {
+      return Promise.reject(error)
+    }
+  );
 
   //response
-  authFetch.interceptors.response.use((response) => {
-    return response
-  }, (error) => {
-    console.log(error.response);
-    if (error.response.status === 401) {
-      console.log(`Auth Error`);
-    }
-    return Promise.reject(error)
-  })
+  authFetch.interceptors.response.use(
+    (response) => {
+      return response
+    }, (error) => {
+      // console.log(error.response);
+      if (error.response.status === 401 || error.response.status === 500) {
+        logoutUser();
+      }
+      return Promise.reject(error)
+    })
   const displayAlert = () => {
     dispatch({ type: DISPLAY_ALERT });
     clearAlert();
@@ -119,7 +123,12 @@ const AppProvider = ({ children }) => {
       dispatch({ type: UPDATE_USER_SUCCESS, payload: { user, location, token } });
       addUserToLocalStorage({ user, location, token });
     } catch (error) {
-      dispatch({ type: UPDATE_USER_ERROR, payload: { msg: error.response.data.msg } });
+      if (error.response.status !== 401) {
+        dispatch({
+          type: UPDATE_USER_ERROR,
+          payload: { msg: error.response.data.msg }
+        });
+      }
     }
     clearAlert()
   };
