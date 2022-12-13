@@ -14,6 +14,7 @@ const AddJob = () => {
     jobTypeOptions,
     status,
     statusOptions,
+    handleChange,
   } = useAppContext();
 
   const handleSubmit = (e) => {
@@ -30,7 +31,7 @@ const AddJob = () => {
     const name = e.target.name;
     const value = e.target.value;
 
-    console.log(`${name}:${value}`);
+    handleChange({ name, value });
 
   }
 
@@ -78,7 +79,7 @@ const AddJob = () => {
             list={jobTypeOptions}
           />
           {/* btn container */}
-          <div className="button-container">
+          <div className="btn-container">
             <button
               type="submit"
               className='btn btn-block submit-btn'
