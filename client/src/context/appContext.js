@@ -13,6 +13,7 @@ import {
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
   HANDLE_CHANGE,
+  CLEAR_VALUES,
 }
   from './actions';
 
@@ -146,6 +147,10 @@ const AppProvider = ({ children }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value } })
   }
 
+  const clearValues = () => {
+    dispatch({ type: CLEAR_VALUES });
+  }
+
   const values = {
     ...state,
     displayAlert,
@@ -154,6 +159,7 @@ const AppProvider = ({ children }) => {
     logoutUser,
     updateUser,
     handleChange,
+    clearValues,
   }
 
   return (
