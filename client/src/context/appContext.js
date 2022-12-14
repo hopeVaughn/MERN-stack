@@ -17,6 +17,8 @@ import {
   CREATE_JOB_BEGIN,
   CREATE_JOB_SUCCESS,
   CREATE_JOB_ERROR,
+  GET_JOBS_BEGIN,
+  GET_JOBS_SUCCESS,
 }
   from './actions';
 
@@ -42,17 +44,23 @@ const initialState = {
   jobType: 'full-time',
   statusOptions: ['interview', 'declined', 'pending'],
   status: 'pending',
+  jobs: [],
+  totalJobs: 0,
+  numOfPages: 1,
+  page: 1,
 }
 
 const AppContext = React.createContext()
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  //axios default
+
+  //Create axios default function for get
   const authFetch = axios.create({
     baseURL: '/api/v1',
   })
-  //request
+
+  //request//Create axios default function for request
   authFetch.interceptors.request.use(
     (config) => {
       config.headers['Authorization'] = `Bearer ${state.token}`
@@ -63,7 +71,7 @@ const AppProvider = ({ children }) => {
     }
   );
 
-  //response
+  //Create axios default function for response
   authFetch.interceptors.response.use(
     (response) => {
       return response
@@ -84,6 +92,7 @@ const AppProvider = ({ children }) => {
     }, 3000)
   }
 
+  // begin of add and remove user, jwt token, and location to local storage
   const addUserToLocalStorage = ({ user, token, location }) => {
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('token', token);
@@ -95,7 +104,8 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem('user');
     localStorage.removeItem('location');
   };
-
+  // End of add and remove user, jwt token, and location to local storage
+  // Setup User function
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
     dispatch({ type: SETUP_USER_BEGIN })
     try {
@@ -117,15 +127,18 @@ const AppProvider = ({ children }) => {
     clearAlert();
   }
 
+  // toggleSidebar function
   const toggleSidebar = () => {
     dispatch({ type: TOGGLE_SIDEBAR })
   }
 
+  // Logout User function
   const logoutUser = () => {
     dispatch({ type: LOGOUT_USER });
     removeUserFromLocalStorage();
   }
 
+  // Update User Logic
   const updateUser = async (currentUser) => {
     dispatch({ type: UPDATE_USER_BEGIN })
     try {
@@ -146,6 +159,7 @@ const AppProvider = ({ children }) => {
     clearAlert()
   };
 
+  // Global handle change logic
   const handleChange = ({ name, value }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value } })
   }
@@ -154,6 +168,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CLEAR_VALUES });
   }
 
+  // Create Job Logic
   const createJob = async () => {
     dispatch({ type: CREATE_JOB_BEGIN });
     try {
@@ -177,6 +192,29 @@ const AppProvider = ({ children }) => {
     clearAlert()
   };
 
+  // Get all jobs logic
+  const getJobs = async () => {
+    let url = `/jobs`;
+
+    dispatch({ type: GET_JOBS_BEGIN });
+    try {
+      const { data } = await authFetch(url);
+      const { jobs, totalJobs, numOfPages } = data;
+      dispatch({
+        type: GET_JOBS_SUCCESS,
+        payload: {
+          jobs,
+          totalJobs,
+          numOfPages,
+        },
+      })
+    } catch (error) {
+      console.log(error.response);
+      logoutUser()
+    }
+    clearAlert();
+  }
+
   const values = {
     ...state,
     displayAlert,
@@ -187,7 +225,9 @@ const AppProvider = ({ children }) => {
     handleChange,
     clearValues,
     createJob,
+    getJobs,
   }
+
 
   return (
     <AppContext.Provider
