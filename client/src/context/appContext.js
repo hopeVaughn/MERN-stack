@@ -60,7 +60,7 @@ const AppProvider = ({ children }) => {
     baseURL: '/api/v1',
   })
 
-  //request//Create axios default function for request
+  //function for request
   authFetch.interceptors.request.use(
     (config) => {
       config.headers['Authorization'] = `Bearer ${state.token}`
