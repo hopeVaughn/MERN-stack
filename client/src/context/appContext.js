@@ -214,7 +214,14 @@ const AppProvider = ({ children }) => {
     }
     clearAlert();
   }
-
+  // begin of setEditJOb logic
+  const setEditJob = (id) => {
+    console.log(`set edit job : ${id}`);
+  }
+  const deleteJob = (id) => {
+    console.log((` delete job : ${id}`));
+  }
+  // end of setEditJOb logic
   const values = {
     ...state,
     displayAlert,
@@ -226,6 +233,8 @@ const AppProvider = ({ children }) => {
     clearValues,
     createJob,
     getJobs,
+    setEditJob,
+    deleteJob,
   }
 
 
