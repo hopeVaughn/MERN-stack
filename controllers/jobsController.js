@@ -45,7 +45,7 @@ const updateJob = async (req, res) => {
       new: true,
       runValidators: true,
     })
-  res.status(StatusCodes.OK).json({ updateJob })
+  res.status(StatusCodes.OK).json({ updatedJob })
 }
 const deleteJob = async (req, res) => {
   res.send('delete Job')
