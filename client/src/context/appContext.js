@@ -24,6 +24,8 @@ import {
   EDIT_JOB_BEGIN,
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
+  SHOW_STATS_BEGIN,
+  SHOW_STATS_SUCCESS,
 }
   from './actions';
 
@@ -225,7 +227,7 @@ const AppProvider = ({ children }) => {
   }
 
   const editJob = async () => {
-    dispatch({ type: DELETE_JOB_BEGIN });
+    dispatch({ type: EDIT_JOB_BEGIN });
     try {
       const { position, company, jobLocation, jobType, status } = state
       await authFetch.patch(`/jobs/${state.editJobId}`, {

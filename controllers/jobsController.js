@@ -84,6 +84,5 @@ const showStats = async (req, res) => {
   }
   let monthlyApplications = []
   res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications });
-  res.send('show Stats')
 }
 export { createJob, deleteJob, getAllJobs, updateJob, showStats };
