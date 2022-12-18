@@ -234,6 +234,24 @@ const reducer = (state, action) => {
     }
   }
   // end of edit job
+  // start of show stats
+  if (action.type === SHOW_STATS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+
+    }
+  }
+  if (action.type === SHOW_STATS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      stats: action.payload.stats,
+      monthlyApplications: action.payload.monthlyApplications,
+    }
+  }
+  // end of show stats
   throw new Error(`no such action: ${action.type}`)
 }
 

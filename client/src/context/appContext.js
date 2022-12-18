@@ -55,6 +55,8 @@ const initialState = {
   totalJobs: 0,
   numOfPages: 1,
   page: 1,
+  stats: {},
+  monthlyApplications: [],
 }
 
 const AppContext = React.createContext()
@@ -260,6 +262,25 @@ const AppProvider = ({ children }) => {
     }
   }
   // end of setEditJOb logic
+  // start of show stats logic
+  const showStats = async () => {
+    dispatch({ type: SHOW_STATS_BEGIN });
+    try {
+      const { data } = await authFetch('/jobs/stats');
+      dispatch({
+        type: SHOW_STATS_SUCCESS,
+        payload: {
+          stats: data.defaultStats,
+          monthlyApplications: data.monthlyApplications,
+        },
+      })
+    } catch (error) {
+      console.error(error.response);
+      // logoutUser()
+    }
+    clearAlert();
+  }
+  // end of show stats logic
   const values = {
     ...state,
     displayAlert,
@@ -274,6 +295,7 @@ const AppProvider = ({ children }) => {
     setEditJob,
     deleteJob,
     editJob,
+    showStats,
   }
 
 
