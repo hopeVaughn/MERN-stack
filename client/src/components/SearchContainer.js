@@ -1,19 +1,18 @@
 import { FormRow, FormRowSelect } from '.';
 import { useAppContext } from '../context/appContext';
 import Wrapper from '../assets/wrappers/SearchContainer';
-
 const SearchContainer = () => {
   const {
     isLoading,
     search,
-    handleChange,
     searchStatus,
-    statusOptions,
-    jobTypeOptions,
     searchType,
-    clearFilters,
     sort,
     sortOptions,
+    statusOptions,
+    jobTypeOptions,
+    handleChange,
+    clearFilters,
   } = useAppContext();
 
   const handleSearch = (e) => {
@@ -24,6 +23,7 @@ const SearchContainer = () => {
     e.preventDefault();
     clearFilters();
   };
+
   return (
     <Wrapper>
       <form className='form'>
@@ -36,6 +36,7 @@ const SearchContainer = () => {
             value={search}
             handleChange={handleSearch}
           ></FormRow>
+          {/* rest of the inputs */}
           {/* search by status */}
           <FormRowSelect
             labelText='job status'
@@ -45,7 +46,6 @@ const SearchContainer = () => {
             list={['all', ...statusOptions]}
           ></FormRowSelect>
           {/* search by type */}
-
           <FormRowSelect
             labelText='job type'
             name='searchType'
@@ -54,7 +54,6 @@ const SearchContainer = () => {
             list={['all', ...jobTypeOptions]}
           ></FormRowSelect>
           {/* sort */}
-
           <FormRowSelect
             name='sort'
             value={sort}
