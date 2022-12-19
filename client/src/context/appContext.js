@@ -26,6 +26,7 @@ import {
   EDIT_JOB_ERROR,
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
+  CLEAR_FILTERS,
 }
   from './actions';
 
@@ -288,7 +289,7 @@ const AppProvider = ({ children }) => {
   // end of show stats logic
   // start of clear filters
   const clearFilters = () => {
-    console.log('clear filters');
+    dispatch({ type: CLEAR_FILTERS });
   }
   // end of clear filters
   const values = {

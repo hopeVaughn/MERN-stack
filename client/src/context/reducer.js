@@ -23,6 +23,7 @@ import {
   EDIT_JOB_ERROR,
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
+  CLEAR_FILTERS,
 } from "./actions"
 
 import { initialState } from './appContext';
@@ -252,6 +253,17 @@ const reducer = (state, action) => {
     }
   }
   // end of show stats
+  // start of lear filters
+  if (action.type === CLEAR_FILTERS) {
+    return {
+      ...state,
+      search: '',
+      searchStatus: 'all',
+      searchType: 'all',
+      sort: 'latest',
+    };
+  }
+  // end of lear filters
   throw new Error(`no such action: ${action.type}`)
 }
 
