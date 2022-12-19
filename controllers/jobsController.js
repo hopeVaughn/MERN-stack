@@ -4,6 +4,8 @@ import { BadRequestError, UnAuthenticatedError, NotFoundError } from '../errors/
 import checkPermissions from '../utils/checkPermissions.js';
 import mongoose from 'mongoose';
 import moment from 'moment';
+
+// create jobs
 const createJob = async (req, res) => {
   const { position, company } = req.body;
 
@@ -13,16 +15,51 @@ const createJob = async (req, res) => {
   req.body.createdBy = req.user.userId;
   const job = await Job.create(req.body);
   res.status(StatusCodes.CREATED).json({ job });
-}
+};
+
+// get all jobs
 const getAllJobs = async (req, res) => {
-  const jobs = await Job.find({ createdBy: req.user.userId })
-  res.status(StatusCodes.OK)
+  const { status, jobType, sort, search } = req.query
+
+  const queryObject = {
+    createdBy: req.user.userId,
+  }
+
+  if (status !== 'all') {
+    queryObject.status = status;
+  }
+  if (jobType !== 'all') {
+    queryObject.jobType = jobType;
+  }
+  if (search) {
+    queryObject.position = { $regex: search, $options: 'i' };
+  }
+  // NO AWAIT
+  let result = Job.find(queryObject);
+  // chain sort conditions
+  if (sort === 'latest') {
+    result = result.sort('-createdAt');
+  }
+  if (sort === 'oldest') {
+    result = result.sort('createdAt');
+  }
+  if (sort === 'a-z') {
+    result = result.sort('position');
+  }
+  if (sort === 'z-a') {
+    result = result.sort('-position');
+  }
+  const jobs = await result;
+  res
+    .status(StatusCodes.OK)
     .json({
       jobs,
       totalJobs: jobs.length,
       numOfPages: 1
     });
-}
+};
+
+//update jobs
 const updateJob = async (req, res) => {
   const { id: jobId } = req.params;
   const { company, position } = req.body;
@@ -35,12 +72,10 @@ const updateJob = async (req, res) => {
 
   if (!job) {
     throw new NotFoundError(`No job with id :${jobId}`);
-  }
+  };
 
   //check permissions
-
   checkPermissions(req.user, job.createdBy)
-
 
   const updatedJob = await Job.findOneAndUpdate(
     { _id: jobId },
@@ -51,6 +86,8 @@ const updateJob = async (req, res) => {
     })
   res.status(StatusCodes.OK).json({ updatedJob })
 }
+
+// delete job
 const deleteJob = async (req, res) => {
   const { id: jobId } = req.params;
 
