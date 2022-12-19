@@ -209,8 +209,12 @@ const AppProvider = ({ children }) => {
 
   // Get all jobs logic
   const getJobs = async () => {
-    let url = `/jobs`;
-
+    // will add page later
+    const { search, searchStatus, searchType, sort } = state;
+    let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+    if (search) {
+      url = url + `&search=${search}`;
+    }
     dispatch({ type: GET_JOBS_BEGIN });
     try {
       const { data } = await authFetch(url);
@@ -222,13 +226,12 @@ const AppProvider = ({ children }) => {
           totalJobs,
           numOfPages,
         },
-      })
+      });
     } catch (error) {
-      console.error(error.response);
       // logoutUser()
     }
     clearAlert();
-  }
+  };
   // begin of setEditJOb and delete logic
   const setEditJob = (id) => {
     dispatch({ type: SET_EDIT_JOB, payload: { id } })
