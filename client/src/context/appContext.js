@@ -57,6 +57,11 @@ const initialState = {
   page: 1,
   stats: {},
   monthlyApplications: [],
+  search: '',
+  searchStatus: 'all',
+  searchType: 'all',
+  sort: 'latest',
+  sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
 }
 
 const AppContext = React.createContext()
@@ -281,6 +286,11 @@ const AppProvider = ({ children }) => {
     clearAlert();
   }
   // end of show stats logic
+  // start of clear filters
+  const clearFilters = () => {
+    console.log('clear filters');
+  }
+  // end of clear filters
   const values = {
     ...state,
     displayAlert,
@@ -296,6 +306,7 @@ const AppProvider = ({ children }) => {
     deleteJob,
     editJob,
     showStats,
+    clearFilters,
   }
 
 
