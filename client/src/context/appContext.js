@@ -210,7 +210,6 @@ const AppProvider = ({ children }) => {
 
   // Get all jobs logic
   const getJobs = async () => {
-    // will add page later
     const { page, search, searchStatus, searchType, sort } = state;
     let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
     if (search) {
@@ -229,7 +228,7 @@ const AppProvider = ({ children }) => {
         },
       });
     } catch (error) {
-      // logoutUser()
+      logoutUser()
     }
     clearAlert();
   };
@@ -268,7 +267,7 @@ const AppProvider = ({ children }) => {
       getJobs()
     } catch (error) {
       console.error(error.response);
-      // logoutUser()
+      logoutUser()
     }
   }
   // end of setEditJOb logic
@@ -286,7 +285,7 @@ const AppProvider = ({ children }) => {
       })
     } catch (error) {
       console.error(error.response);
-      // logoutUser()
+      logoutUser()
     }
     clearAlert();
   }
