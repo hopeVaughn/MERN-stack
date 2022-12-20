@@ -10,7 +10,6 @@ import Job from './models/Job.js';
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URL);
-    await Job.deleteMany();
 
     const jsonProducts = JSON.parse(
       await readFile(
