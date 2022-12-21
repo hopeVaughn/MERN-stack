@@ -26,7 +26,6 @@ const register = async (req, res) => {
       location: user.location,
       name: user.name
     },
-    token,
     location: user.location,
   })
 
@@ -49,8 +48,9 @@ const login = async (req, res) => {
   user.password = undefined;
   attachCookies({ res, token });
 
-  res.status(StatusCodes.OK).json({ user, token, location: user.location })
+  res.status(StatusCodes.OK).json({ user, location: user.location })
 }
+// update user
 const updateUser = async (req, res) => {
   const { email, name, lastName, location } = req.body;
   if (!email || !name || !lastName || !location) {
@@ -67,7 +67,8 @@ const updateUser = async (req, res) => {
 
   const token = user.createJWT();
   attachCookies({ res, token });
-  res.status(StatusCodes.OK).json({ user, token, location: user.location });
+
+  res.status(StatusCodes.OK).json({ user, location: user.location });
 }
 
 export { register, login, updateUser }
