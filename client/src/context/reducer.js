@@ -87,9 +87,7 @@ const reducer = (state, action) => {
   if (action.type === LOGOUT_USER) {
     return {
       ...initialState,
-      user: null,
-      userLocation: '',
-      jobLocation: '',
+      userLoading: false,
     };
   }
   //end of logoutUser
@@ -283,6 +281,24 @@ const reducer = (state, action) => {
     }
   }
   // end of change page
+  // start of get user
+  if (action.type === GET_CURRENT_USER_BEGIN) {
+    return {
+      ...state,
+      userLoading: true,
+      shawAlert: false,
+    }
+  };
+  if (action.type === GET_CURRENT_USER_SUCCESS) {
+    return {
+      ...state,
+      userLoading: false,
+      user: action.payload.user,
+      userLocation: action.payload.location,
+      jobLocation: action.payload.location,
+    };
+  };
+  // end of get user
   throw new Error(`no such action: ${action.type}`)
 }
 
