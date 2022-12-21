@@ -122,9 +122,10 @@ const AppProvider = ({ children }) => {
   }
 
   // Logout User function
-  const logoutUser = () => {
+  const logoutUser = async () => {
+    await authFetch.get('/auth/logout');
     dispatch({ type: LOGOUT_USER });
-  }
+  };
 
   // Update User Logic
   const updateUser = async (currentUser) => {
@@ -206,7 +207,7 @@ const AppProvider = ({ children }) => {
     }
     clearAlert();
   };
-  // begin of setEditJOb and delete logic
+  // begin of setEditJob and delete logic
   const setEditJob = (id) => {
     dispatch({ type: SET_EDIT_JOB, payload: { id } })
   }
