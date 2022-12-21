@@ -32,24 +32,19 @@ import {
 }
   from './actions';
 
-const token = localStorage.getItem('token')
-const user = localStorage.getItem('user')
-const userLocation = localStorage.getItem('location')
-
 const initialState = {
   isLoading: false,
   showAlert: false,
   alertText: '',
   alertType: '',
-  user: user ? JSON.parse(user) : null,
-  token: token,
-  userLocation: userLocation || '',
+  user: null,
+  userLocation: '',
   showSidebar: false,
   isEditing: false,
   editJobId: '',
   position: '',
   company: '',
-  jobLocation: userLocation || '',
+  jobLocation: '',
   jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
   jobType: 'full-time',
   statusOptions: ['interview', 'declined', 'pending'],
@@ -77,17 +72,6 @@ const AppProvider = ({ children }) => {
     baseURL: '/api/v1',
   })
 
-  //function for request
-  authFetch.interceptors.request.use(
-    (config) => {
-      config.headers['Authorization'] = `Bearer ${state.token}`
-      return config
-    },
-    (error) => {
-      return Promise.reject(error)
-    }
-  );
-
   //Create axios default function for response
   authFetch.interceptors.response.use(
     (response) => {
@@ -109,33 +93,18 @@ const AppProvider = ({ children }) => {
     }, 3000)
   }
 
-  // begin of add and remove user, jwt token, and location to local storage
-  const addUserToLocalStorage = ({ user, token, location }) => {
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('token', token);
-    localStorage.setItem('location', location);
-  };
-
-  const removeUserFromLocalStorage = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('location');
-  };
-  // End of add and remove user, jwt token, and location to local storage
   // Setup User function
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
     dispatch({ type: SETUP_USER_BEGIN })
     try {
       const { data } = await axios.post(`/api/v1/auth/${endPoint}`, currentUser);
 
-      const { user, token, location } = data
+      const { user, location } = data
       dispatch({
         type: SETUP_USER_SUCCESS,
-        payload: { user, token, location, alertText }
+        payload: { user, location, alertText }
       })
-      addUserToLocalStorage({ user, token, location })
     } catch (error) {
-
       dispatch({
         type: SETUP_USER_ERROR,
         payload: { msg: error.response.data.msg }
@@ -152,7 +121,6 @@ const AppProvider = ({ children }) => {
   // Logout User function
   const logoutUser = () => {
     dispatch({ type: LOGOUT_USER });
-    removeUserFromLocalStorage();
   }
 
   // Update User Logic
@@ -161,10 +129,12 @@ const AppProvider = ({ children }) => {
     try {
       const { data } = await authFetch.patch('/auth/updateUser', currentUser);
 
-      const { user, location, token } = data;
+      const { user, location } = data;
 
-      dispatch({ type: UPDATE_USER_SUCCESS, payload: { user, location, token } });
-      addUserToLocalStorage({ user, location, token });
+      dispatch({
+        type: UPDATE_USER_SUCCESS,
+        payload: { user, location }
+      });
     } catch (error) {
       if (error.response.status !== 401) {
         dispatch({
