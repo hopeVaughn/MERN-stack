@@ -40,10 +40,17 @@ const login = async (req, res) => {
   if (!isPasswordCorrect) {
     throw new UnAuthenticatedError('Invalid Credentials')
   }
-  const token = user.createJWT()
+  const token = user.createJWT();
   user.password = undefined;
+
+  const oneDay = 1000 * 60 * 60 * 24;
+  res.cookie('token', token, {
+    httpOnly: true,
+    expires: new Date(Date.now() + oneDay),
+    secure: process.env.NODE_ENV === 'production',
+  });
+
   res.status(StatusCodes.OK).json({ user, token, location: user.location })
-  res.send('login user')
 }
 const updateUser = async (req, res) => {
   const { email, name, lastName, location } = req.body;
