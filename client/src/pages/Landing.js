@@ -12,7 +12,7 @@ const Landing = () => {
         {/* info */}
         <div className="info">
           <h1>job <span>tracking</span> app</h1>
-          <p>I'm baby shoreditch echo park gluten-free tumblr pickled craft beer retro trust fund. Single-origin coffee poke waistcoat gastropub DIY. Portland hashtag pour-over blog, synth celiac green juice fanny pack. Pabst pinterest lo-fi af yuccie edison bulb enamel pin. Portland vibecession church-key intelligentsia pok pok readymade palo santo taxidermy.</p>
+          <p>Jobify is a full stack application that helps you track and maintain your job search data. Add, edit, and delete jobs and track your monthly application data all in one spot.</p>
           <Link to='/register' className="btn btn-hero">Login/Register</Link>
         </div>
         <img src={main} alt="job hunt" className="img main-img" />
